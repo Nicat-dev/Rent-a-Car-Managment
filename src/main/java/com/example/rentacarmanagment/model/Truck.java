@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table
 public class Truck extends Vehicle{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

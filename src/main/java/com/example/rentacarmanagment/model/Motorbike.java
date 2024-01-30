@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "motorbike")
 public class Motorbike extends Vehicle{
 
     @Id
