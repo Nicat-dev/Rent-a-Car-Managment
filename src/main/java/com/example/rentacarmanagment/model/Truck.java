@@ -11,7 +11,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table
 public class Truck extends Vehicle{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +21,9 @@ public class Truck extends Vehicle{
     private Boolean isFourWheelDrive;
     @Column(name = "cargo_type",nullable = false)
     private String cargoType;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
+
 }

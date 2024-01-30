@@ -11,7 +11,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "cars")
 public class Cars extends Vehicle{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,4 +19,9 @@ public class Cars extends Vehicle{
     private Integer doors;
     @Column(name = "number_of_place",nullable = false)
     private Integer numberOfPlace;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
+
 }

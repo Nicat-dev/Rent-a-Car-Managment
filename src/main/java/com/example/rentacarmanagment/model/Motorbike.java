@@ -11,7 +11,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "motorbike")
 public class Motorbike extends Vehicle{
 
     @Id
@@ -19,4 +18,9 @@ public class Motorbike extends Vehicle{
     private Long id;
     @Column(name = "bike_type",nullable = false)
     private String bikeType;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private Owner owner;
+
 }
