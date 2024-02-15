@@ -11,6 +11,6 @@ public interface CarMapper {
 
     CarDto entityToDto(Cars cars);
     Cars dtoToEntity(CarDto carDto);
-    List<Cars> entityListToDtoList(CarDto carDto);
+    List<Cars> entityListToDtoList(List<CarDto> carDto);
 
 }

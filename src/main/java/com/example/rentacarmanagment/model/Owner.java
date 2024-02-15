@@ -18,6 +18,7 @@ import java.util.List;
 public class Owner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id",nullable = false, updatable = false)
     private Long id;
     @Column(name = "name",nullable = false)
     private String name;
@@ -29,6 +30,8 @@ public class Owner {
     private String passportNumber;
     @Column(name = "location",nullable = false)
     private String location;
+    @Column(name = "phone_number",nullable = false)
+    private String phoneNumber;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cars> carses = new ArrayList<>();
