@@ -6,11 +6,11 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface CarMapper {
 
     CarDto entityToDto(Cars cars);
     Cars dtoToEntity(CarDto carDto);
-    List<Cars> entityListToDtoList(List<CarDto> carDto);
+    List<CarDto> entityListToDtoList(List<Cars> cars);
 
 }

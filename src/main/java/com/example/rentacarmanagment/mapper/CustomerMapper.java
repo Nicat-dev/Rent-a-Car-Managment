@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface CustomerMapper {
     Customer requestToEntity(RegisterRequest request);
     ResponseCustomer entityToDto(Customer customer);
