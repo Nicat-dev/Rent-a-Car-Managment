@@ -19,5 +19,5 @@ public class CarDto {
     private Boolean availability;
     private Integer doors;
     private Integer numberOfPlace;
-    private Long ownerId;
+    private OwnerDto owner;
 }
