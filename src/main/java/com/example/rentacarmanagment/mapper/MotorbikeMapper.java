@@ -12,5 +12,5 @@ public interface MotorbikeMapper {
 
     MotorbikeDto dtoToEntity(Motorbike motorbike);
     Motorbike entityToRequest(MotorbikeRequest request);
-    List<Motorbike> entityListToDtoList(List<MotorbikeDto> motorbikeDtoList);
+    List<MotorbikeDto> entityListToDtoList(List<Motorbike> motorbikeDtoList);
 }
