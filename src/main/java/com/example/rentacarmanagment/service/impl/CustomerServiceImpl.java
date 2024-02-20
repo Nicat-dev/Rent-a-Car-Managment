@@ -3,6 +3,7 @@ package com.example.rentacarmanagment.service.impl;
 import com.example.rentacarmanagment.dto.request.RegisterRequest;
 import com.example.rentacarmanagment.dto.request.ResponseCustomer;
 import com.example.rentacarmanagment.exception.ResourceExistsException;
+import com.example.rentacarmanagment.exception.ResourceIdCanNotBeNull;
 import com.example.rentacarmanagment.exception.ResourceNotFoundException;
 import com.example.rentacarmanagment.mapper.CustomerMapper;
 import com.example.rentacarmanagment.model.Customer;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -21,9 +23,9 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerMapper mapper;
 
     @Override
-    public ResponseCustomer save(Customer customer) {
-        ifExist(customer.getId());
-        return mapper.entityToDto(repository.save(customer));
+    public ResponseCustomer save(RegisterRequest registerRequest) {
+        emailValidation(registerRequest.email());
+        return mapper.entityToDto(repository.save(mapper.requestToEntity(registerRequest)));
     }
 
     @Override
@@ -38,31 +40,29 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteById(Long id) {
-        ifNotExist(id);
         repository.deleteById(id);
     }
 
     @Override
     public ResponseCustomer updateById(Long id, RegisterRequest request) {
-        ifNotExist(id);
-        Customer customer = getCustomer(id);
-        customer = mapper.requestToEntity(request);
+        emailValidation(request.email());
+        Customer customer = mapper.requestToEntity(request);
         return mapper.entityToDto(repository.save(customer));
     }
 
-    private void ifNotExist(Long id){
-        if (!repository.existsById(id)){
-            throw new ResourceNotFoundException("Customer",id.toString(),id);
-        }
-    }
-
-    private void ifExist(Long id){
-        if (repository.existsById(id)){
-            throw new ResourceExistsException("Customer",id.toString(),id);
+    private void idNullCheck(Long id){
+        if (Objects.isNull(id)){
+            throw new ResourceIdCanNotBeNull("Customer id cannot be null","id",id);
         }
     }
 
     private Customer getCustomer(Long id){
         return repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Customer",id.toString(),id));
+    }
+
+    private void emailValidation(String email){
+        if (repository.existsByEmail(email)){
+            throw new ResourceExistsException("Email is exist",email,email);
+        }
     }
 }
