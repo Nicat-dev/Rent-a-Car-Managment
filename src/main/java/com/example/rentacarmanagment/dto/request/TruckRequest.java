@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public record TruckRequest(
 
-
+        Long id,
         @NotBlank(message = "engine cannot be Blank") Float enginePower,
         @NotBlank(message = "car mark cannot be Blank") String carMark,
         @NotBlank(message = "car model cannot be Blank") String carModel,
