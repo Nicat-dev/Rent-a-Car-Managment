@@ -40,6 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteById(Long id) {
+        idNullCheck(id);
         repository.deleteById(id);
     }
 
