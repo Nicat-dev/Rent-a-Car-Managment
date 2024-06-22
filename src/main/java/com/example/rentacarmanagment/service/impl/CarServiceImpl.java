@@ -1,7 +1,7 @@
 package com.example.rentacarmanagment.service.impl;
 
 import com.example.rentacarmanagment.dto.CarDto;
-import com.example.rentacarmanagment.exception.ResourceExistsException;
+import com.example.rentacarmanagment.dto.request.CarRequest;
 import com.example.rentacarmanagment.exception.ResourceNotFoundException;
 import com.example.rentacarmanagment.mapper.CarMapper;
 import com.example.rentacarmanagment.model.Cars;
@@ -19,9 +19,18 @@ public class CarServiceImpl implements CarService {
     private final CarMapper mapper;
 
     @Override
-    public CarDto save(Cars cars) {
-        ifExist(cars.getId());
-        return mapper.entityToDto(repository.save(cars));
+    public CarDto save(CarRequest carRequest) {
+        return mapper.entityToDto(repository.save(mapper.entityToRequest(carRequest)));
+    }
+
+    @Override
+    public CarDto update(CarRequest request, Long id) {
+        return repository.findById(id).map( cars -> {
+                    Cars entity = mapper.entityToRequest(request);
+                    entity.setId(id);
+                    return mapper.entityToDto(entity);
+                }
+        ).orElseThrow(()-> new ResourceNotFoundException("Car","id",request));
     }
 
     @Override
@@ -37,12 +46,6 @@ public class CarServiceImpl implements CarService {
     @Override
     public void deleteById(Long id) {
         repository.delete(getEntity(id));
-    }
-
-    private void ifExist(Long id){
-        if (repository.existsById(id)){
-            throw new ResourceExistsException("Car is exist",id.toString(),id);
-        }
     }
 
     private Cars getEntity(Long id){
