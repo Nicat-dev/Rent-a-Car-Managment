@@ -3,14 +3,12 @@ package com.example.rentacarmanagment.service.impl;
 import com.example.rentacarmanagment.dto.request.RegisterRequest;
 import com.example.rentacarmanagment.dto.request.ResponseCustomer;
 import com.example.rentacarmanagment.exception.ApplicationException;
-import com.example.rentacarmanagment.exception.ResourceExistsException;
-import com.example.rentacarmanagment.exception.ResourceIdCanNotBeNull;
-import com.example.rentacarmanagment.exception.ResourceNotFoundException;
 import com.example.rentacarmanagment.exception.enums.Exceptions;
 import com.example.rentacarmanagment.mapper.CustomerMapper;
 import com.example.rentacarmanagment.model.Customer;
 import com.example.rentacarmanagment.repo.CustomerRepository;
 import com.example.rentacarmanagment.service.CustomerService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public ResponseCustomer updateById(Long id, RegisterRequest request) {
         emailValidation(request.email());
         return repository.findById(id).map(customer -> {
@@ -58,17 +57,17 @@ public class CustomerServiceImpl implements CustomerService {
 
     private void idNullCheck(Long id) {
         if (Objects.isNull(id)) {
-            throw new ResourceIdCanNotBeNull("Customer id cannot be null", "id", id);
+            throw new ApplicationException(Exceptions.RESOURCE_ID_CAN_NOT_BE_NULL);
         }
     }
 
     private Customer getCustomer(Long id) {
-        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Customer", id.toString(), id));
+        return repository.findById(id).orElseThrow(() -> new ApplicationException(Exceptions.USER_NOT_FOUND_EXCEPTION));
     }
 
     private void emailValidation(String email) {
         if (repository.existsByEmail(email)) {
-            throw new ResourceExistsException("Email is exist", email, email);
+            throw new ApplicationException(Exceptions.RESOURCE_EXIST_EXCEPTION);
         }
     }
 }
