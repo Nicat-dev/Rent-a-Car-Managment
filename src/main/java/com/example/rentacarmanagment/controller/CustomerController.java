@@ -18,7 +18,7 @@ public class CustomerController {
 
     private final CustomerService service;
 
-    @GetMapping("/id")
+    @GetMapping("/{id}")
     public ResponseEntity<ResponseCustomer> get(@PathVariable Long id){
         final var dto = service.getById(id);
         return ResponseEntity.ok().body(dto);
@@ -36,6 +36,12 @@ public class CustomerController {
         final var location = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("{/id}").build(dto.getId());
         return ResponseEntity.created(location).body(dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
