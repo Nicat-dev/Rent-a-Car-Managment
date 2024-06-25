@@ -33,8 +33,15 @@ public class CarController {
     @PostMapping
     public ResponseEntity<CarDto> save(@Valid @RequestBody CarRequest request) {
         var dto = service.save(request);
-        var location = ServletUriComponentsBuilder.fromCurrentContextPath().build(dto.getId());
+        var location = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .build(dto.getId());
         return ResponseEntity.created(location).body(dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        service.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
