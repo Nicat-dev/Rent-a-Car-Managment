@@ -20,20 +20,20 @@ public class CarController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CarDto> getById(@Valid @PathVariable Long id) {
-        var dto = service.getById(id);
+        final var dto = service.getById(id);
         return ResponseEntity.ok().body(dto);
     }
 
     @GetMapping
     public ResponseEntity<List<CarDto>> getList() {
-        var dtoList = service.getList();
+        final var dtoList = service.getList();
         return ResponseEntity.ok().body(dtoList);
     }
 
     @PostMapping
     public ResponseEntity<CarDto> save(@Valid @RequestBody CarRequest request) {
-        var dto = service.save(request);
-        var location = ServletUriComponentsBuilder.fromCurrentContextPath()
+        final var dto = service.save(request);
+        final var location = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .build(dto.getId());
         return ResponseEntity.created(location).body(dto);
     }
