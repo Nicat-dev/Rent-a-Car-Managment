@@ -2,7 +2,8 @@ package com.example.rentacarmanagment.service.impl;
 
 import com.example.rentacarmanagment.dto.CarDto;
 import com.example.rentacarmanagment.dto.request.CarRequest;
-import com.example.rentacarmanagment.exception.ResourceNotFoundException;
+import com.example.rentacarmanagment.exception.ApplicationException;
+import com.example.rentacarmanagment.exception.enums.Exceptions;
 import com.example.rentacarmanagment.mapper.CarMapper;
 import com.example.rentacarmanagment.model.Cars;
 import com.example.rentacarmanagment.repo.CarRepository;
@@ -25,12 +26,12 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public CarDto update(CarRequest request, Long id) {
-        return repository.findById(id).map( cars -> {
+        return repository.findById(id).map(cars -> {
                     Cars entity = mapper.entityToRequest(request);
                     entity.setId(id);
                     return mapper.entityToDto(entity);
                 }
-        ).orElseThrow(()-> new ResourceNotFoundException("Car","id",request));
+        ).orElseThrow(() -> new ApplicationException(Exceptions.RESOURCE_NOT_EXIST_EXCEPTION));
     }
 
     @Override
@@ -48,8 +49,8 @@ public class CarServiceImpl implements CarService {
         repository.delete(getEntity(id));
     }
 
-    private Cars getEntity(Long id){
+    private Cars getEntity(Long id) {
         return repository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Car not found",id.toString(),id));
+                .orElseThrow(() -> new ApplicationException(Exceptions.RESOURCE_NOT_EXIST_EXCEPTION));
     }
 }
