@@ -47,7 +47,8 @@ public class OwnerServiceImpl implements OwnerService {
         return null;
     }
 
-    private Owner findById(Long id){
+    @Override
+    public Owner findById(Long id){
         return repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Owner",id.toString(),id));
     }
 
